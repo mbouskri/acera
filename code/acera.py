@@ -460,7 +460,6 @@ class Ui_aceragui(object):
         FONT = QtGui.QFont()
         FONT.setFamily("Tahoma")
         FONT.setPointSize(int(WIDTH*0.00741))
-        #FONT.setPointSize(8)
         aceragui.setFont(FONT)
 
         self.centralwidget = QtWidgets.QWidget(aceragui)
