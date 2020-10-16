@@ -17,17 +17,36 @@
     along with acera.  If not, see <https://www.gnu.org/licenses/>.
 
 """
+"""
+    Parts of this code are licensed under the MIT License
+
+    Copyright (c) 2017 Didier Chételat
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+"""
 
 import numpy as np
 import torch.nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
-
 class DiscreteActor(torch.nn.Module):
-    """
-    Discrete actor network.
-    """
 
     def __init__(self):
         super().__init__()
@@ -39,19 +58,6 @@ class DiscreteActor(torch.nn.Module):
         self.action_layer = torch.nn.Linear(32, 3)
 
     def forward(self, states):
-        """
-        Compute a forward pass in the network.
-
-        Parameters
-        ----------
-        states : torch.Tensor
-            The states for which the action probabilities must be computed.
-
-        Returns
-        -------
-        action_probabilities : torch.Tensor
-            The action probabilities of the policy according to the actor.
-        """
 
         hidden = F.leaky_relu(self.input_layer(states), negative_slope=0.01)
         hidden = F.leaky_relu(self.hidden_layer(hidden), negative_slope=0.01)
@@ -60,20 +66,14 @@ class DiscreteActor(torch.nn.Module):
         action_probabilities = F.softmax(self.action_layer(hidden), dim=-1)
         return action_probabilities
 
-
 class Brain:
-    """
-    A centralized brain for the agents.
-    """
 
     def __init__(self):
         self.actor = None
-
 
 class DiscreteBrain(Brain):
     def __init__(self):
         super().__init__()
         self.actor = DiscreteActor()
-
 
 brain = DiscreteBrain()

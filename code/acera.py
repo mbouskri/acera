@@ -19,7 +19,7 @@
 """
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QSplashScreen, QMessageBox, QAbstractItemView
+from PyQt5.QtWidgets import QApplication, QSplashScreen, QMessageBox, QAbstractItemView, QDesktopWidget
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from tkinter.filedialog import askdirectory
@@ -37,6 +37,7 @@ import time
 from urllib.request import urlopen
 import requests
 import win32api
+from win32api import GetSystemMetrics
 from functools import partial
 
 
@@ -46,12 +47,22 @@ global LOADED
 global ALIGNED
 global TIME
 global __version__
+global WIDTH
+global HEIGHT
+global WIDTH_O
+global HEIGHT_O
+WIDTH_O = GetSystemMetrics(0)
+HEIGHT_O = GetSystemMetrics(1)
+WIDTH = int(WIDTH_O*0.5625)
+HEIGHT = int(HEIGHT_O*0.667)
 STOP = 0
 RUNNING = 0
 LOADED = 0
 ALIGNED = 0
 TIME = 0
 __version__ = 1.0
+
+
 
 
 def make_ids_seqs(seqs_file):
@@ -133,7 +144,6 @@ class Ui_aceragui(object):
                 RUNNING = 0
         if RUNNING == 0:
             ALIGNED = 0
-            LOADED = 1
             self.statusbar.showMessage("Loading sequences...")
             global width
             global ids1
@@ -205,6 +215,7 @@ class Ui_aceragui(object):
 
                         self.statusbar.showMessage("Sequences loaded")
                         self.progressBar.setProperty("value", 0)
+                        LOADED = 1
                 elif extension != "fasta":
                     self.error.setInformativeText(
                         "Unsupported file extension. Please choose a fasta file."
@@ -441,29 +452,34 @@ class Ui_aceragui(object):
     def setupUi(self, aceragui):
         aceragui.setWindowTitle("acera")
         aceragui.setObjectName("acera")
-        aceragui.resize(1080, 720)
-        aceragui.setMinimumSize(QtCore.QSize(1080, 720))
-        aceragui.setMaximumSize(QtCore.QSize(1080, 720))
+        aceragui.resize(WIDTH, HEIGHT)
+        aceragui.setMinimumSize(QtCore.QSize(WIDTH, HEIGHT))
+        aceragui.setMaximumSize(QtCore.QSize(WIDTH, HEIGHT))
         aceragui.setWindowOpacity(1.0)
         aceragui.setWindowIcon(QtGui.QIcon("images/ACERAICON.ico"))
+        FONT = QtGui.QFont()
+        FONT.setFamily("Tahoma")
+        FONT.setPointSize(int(WIDTH*0.00741))
+        #FONT.setPointSize(8)
+        aceragui.setFont(FONT)
 
         self.centralwidget = QtWidgets.QWidget(aceragui)
         self.centralwidget.setObjectName("centralwidget")
         self.LoadBox = QtWidgets.QGroupBox(self.centralwidget)
         self.LoadBox.setEnabled(True)
-        self.LoadBox.setGeometry(QtCore.QRect(10, 20, 501, 80))
+        self.LoadBox.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.028), int(WIDTH*0.4639), int(HEIGHT*0.112)))
         self.LoadBox.setFlat(False)
         self.LoadBox.setCheckable(False)
         self.LoadBox.setObjectName("LoadBox")
         self.label = QtWidgets.QLabel(self.LoadBox)
-        self.label.setGeometry(QtCore.QRect(10, 30, 361, 31))
+        self.label.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.0417), int(WIDTH*0.3343), int(HEIGHT*0.0433)))
         self.label.setFrameShape(QtWidgets.QFrame.WinPanel)
         self.label.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.label.setText("")
         self.label.setObjectName("label")
 
         self.LoadB = QtWidgets.QPushButton(self.LoadBox)
-        self.LoadB.setGeometry(QtCore.QRect(390, 30, 93, 28))
+        self.LoadB.setGeometry(QtCore.QRect(int(WIDTH*0.3612), int(HEIGHT*0.0417), int(WIDTH*0.08612), int(HEIGHT*0.0389)))
         self.LoadB.setObjectName("LoadB")
         self.LoadB.clicked.connect(self.Load)
 
@@ -487,10 +503,10 @@ class Ui_aceragui(object):
         self.question.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
 
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(560, 20, 501, 80))
+        self.groupBox_2.setGeometry(QtCore.QRect(int(WIDTH*0.5186), int(HEIGHT*0.0278), int(WIDTH*0.4639), int(HEIGHT*0.112)))
         self.groupBox_2.setObjectName("groupBox_2")
         self.splitter = QtWidgets.QSplitter(self.groupBox_2)
-        self.splitter.setGeometry(QtCore.QRect(80, 30, 365, 28))
+        self.splitter.setGeometry(QtCore.QRect(int(WIDTH*0.0741), int(HEIGHT*0.0417), int(WIDTH*0.338), int(HEIGHT*0.039)))
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
         self.AlignB = QtWidgets.QPushButton(self.splitter)
@@ -504,30 +520,30 @@ class Ui_aceragui(object):
         self.SaveB.clicked.connect(self.Save)
 
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setGeometry(QtCore.QRect(10, 640, 1051, 23))
+        self.progressBar.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.889), int(WIDTH*0.9732), int(HEIGHT*0.032)))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setTextVisible(False)
         self.progressBar.setObjectName("progressBar")
 
         font = QtGui.QFont()
         font.setFamily("Consolas")
-        font.setPointSize(10)
+        font.setPointSize(int(WIDTH_O*0.0052084))
 
         self.IDBOX = QtWidgets.QGroupBox(self.centralwidget)
-        self.IDBOX.setGeometry(QtCore.QRect(10, 120, 281, 431))
+        self.IDBOX.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.167), int(WIDTH*0.2602), int(HEIGHT*0.599)))
         self.IDBOX.setObjectName("IDBOX")
         self.listView = QtWidgets.QListView(self.IDBOX)
-        self.listView.setGeometry(QtCore.QRect(10, 20, 256, 401))
+        self.listView.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.0278), int(WIDTH*0.2371), int(HEIGHT*0.557)))
         self.listView.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listView.setObjectName("listView")
         self.listView.setFont(font)
         self.listView.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.SeqBOX = QtWidgets.QGroupBox(self.centralwidget)
-        self.SeqBOX.setGeometry(QtCore.QRect(300, 120, 761, 431))
+        self.SeqBOX.setGeometry(QtCore.QRect(int(WIDTH*0.2778), int(HEIGHT*0.167), int(WIDTH*0.70463), int(HEIGHT*0.599)))
         self.SeqBOX.setObjectName("SeqBOX")
         self.listView_2 = QtWidgets.QListView(self.SeqBOX)
-        self.listView_2.setGeometry(QtCore.QRect(10, 20, 741, 401))
+        self.listView_2.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.0278), int(WIDTH*0.6862), int(HEIGHT*0.557)))
         self.listView_2.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listView_2.setObjectName("listView_2")
         self.listView_2.setFont(font)
@@ -536,17 +552,17 @@ class Ui_aceragui(object):
         self.vs1 = self.listView_2.horizontalScrollBar()
 
         self.ScoreBOX = QtWidgets.QGroupBox(self.centralwidget)
-        self.ScoreBOX.setGeometry(QtCore.QRect(10, 550, 281, 80))
+        self.ScoreBOX.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.7639), int(WIDTH*0.2602), int(HEIGHT*0.112)))
         self.ScoreBOX.setObjectName("ScoreBOX")
         self.Scorelabel = QtWidgets.QLabel(self.ScoreBOX)
-        self.Scorelabel.setGeometry(QtCore.QRect(10, 25, 261, 41))
+        self.Scorelabel.setGeometry(QtCore.QRect(int(WIDTH*0.00926), int(HEIGHT*0.0348), int(WIDTH*0.2417), int(HEIGHT*0.057)))
         self.Scorelabel.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.Scorelabel.setFrameShadow(QtWidgets.QFrame.Plain)
         self.Scorelabel.setText("")
         self.Scorelabel.setObjectName("Scorelabel")
 
         self.listView_3 = QtWidgets.QListView(self.centralwidget)
-        self.listView_3.setGeometry(QtCore.QRect(310, 560, 741, 71))
+        self.listView_3.setGeometry(QtCore.QRect(int(WIDTH*0.2871), int(HEIGHT*0.778), int(WIDTH*0.6862), int(HEIGHT*0.09862)))
         self.listView_3.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.listView_3.setObjectName("listView_3")
         self.listView_3.setFont(font)
@@ -560,7 +576,7 @@ class Ui_aceragui(object):
         aceragui.setCentralWidget(self.centralwidget)
 
         self.menubar = QtWidgets.QMenuBar(aceragui)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1080, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, WIDTH, int(HEIGHT*0.0362)))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
