@@ -44,5 +44,5 @@ This application allows you to run alignments directly using the pre-trained RL 
 
 No code compilation or setup is required.
 
-1. **Download the Desktop App:** Download the installer executable directly from the repository [acera-installer](../../installer/acera-installer.exe).
-2. **User Guide:** For step-by-step instructions on using the interface, refer to the included file in this repository [User Guide](../../code/User_Guide/acera_UserGuide.pdf).
+1. **Download the Desktop App:** Download the installer executable directly from the repository [acera-installer](../../installer/).
+2. **User Guide:** For step-by-step instructions on using the interface, refer to the included file in this repository [User Guide](../../code/User_Guide/).
