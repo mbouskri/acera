@@ -4,6 +4,7 @@
 <p align="center">
   <img src="https://github.com/mbouskri/acera/blob/master/code/images/ACERAICON.png" alt="alt text" width="86" height="86">
 </p>
+
 **ACERA**: A DNA multiple sequence alignment tool that uses the actor of a trained Actor Critic with Experience Replay model.
 
 Because MSA is NP-complete under common scoring schemes, traditional software like ClustalW relies heavily on heuristic approximations. While a human can align short sequences intuitively by shifting nucleotides back and forth by hand, ACERA mimics this manual process using a trained **Actor-Critic with Experience Replay (ACER)** agent.
